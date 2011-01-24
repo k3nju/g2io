@@ -1,43 +1,91 @@
-#include <assert>
-#include <boost/shared_array.hpp>
-
-using namespace g2io;
-
-const size_t THREAD_COUNT = 1;
-const size_t EPOLL_COUNT  = 2;
-
-int main()
-	{
-	Dispatcher d( THREAD_COUNT, EPOLL_COUNT );
-	d.Run();
-	
-	return 0;
-	}
-
+#include <stdio.h>
 
 //-----------------------------------------------------------------------------------------//
-template < class Worker >
-class Dispatcher
+class EpollManager
 	{
 	public:
-		//-----------------------------------------------------------------------------------------//
-		Dispatcher( size_t threadCount,
-					size_t epollCount )
-			:epollFds_(),
-			 workers_(),
-			 threadCount_( threadCount ),
-			 epollCount_( epollCount )
+		EpollManager( size_t size )
+			:seq_( 0 ),
+			 size_( size ),
+			 epollEntries_( NULL )
 			{
-			assert( epollCount_ != 0 );
-			assert( threadCount_ != 0 );
+			assert( size_ != 0 );
+			epollEntries_ = new g2::Epoll[ size_ ];
+			for( size_t i = 0; i < size_; ++i )
+				{
+				epollEntries_[i].isUsed = false;
+				}
+			}
+		
+		~EpollManager()
+			{
+			delete [] epolls_;
+			}
+		
+		int Select( epoll_event *events, size_t size, g2::Epoll &*epoll )
+			{
+			for( size_t i = 0; i < size_; ++i )
+				{
+				size_t i = __sync_fetch_and_add( &seq_, 1 ) % size_;
+				EpollEntry *e = epollEntries_ + i;
+				if( __sync_bool_compare_and_swap( &( e->isUsed ), false,true ) )
+					{
+					epoll = &( e->epoll );
+					int count = e->epoll.Select( events, size, -1 );
+					__sync_bool_compare_and_swap( &( e->isUsed ), true, false );
+					
+					return count;
+					}
+				}
 
-			workers_.reset( new Worker[ threadCount_ ] );
-			epollFds_.reset( new int[ epollCount_ ] );
+			return -1;
 			}
 		
 	private:
-		boost::shared_array< Worker* > workers_;
-		boost::shared_array< int > epollFds_;
-		size_t threadCount_;
-		size_t epollCount_;
+		struct EpollEntry
+			{
+				g2::Epoll epoll;
+				bool isUsed;
+			};
+		
+		size_t size_;
+		size_t seq_;
+		EpollEntry *epollEntries_;
 	};
+
+//-----------------------------------------------------------------------------------------//
+class DispatchWorker :public g2::Threading
+	{
+	public:
+		
+	private:
+		virtual int Thread( void *argv )
+			{
+			Component *comp = (Component*)argv;
+			EpollManager *epollMngr = NULL;
+			
+			while( true )
+				{
+				g2::Epoll *epoll = NULL;
+				epoll_event_array_t events( new epoll_event[1024] );
+				int count = epollMngr->Select( events.get(), 1024, epoll );
+				if( count > 0 )
+					{
+					Distribute( events, count, epoll );
+					}
+				else
+					{
+					Task task;
+					
+					}
+				}
+			
+			return 0;
+			}
+	};
+
+int main()
+	{
+
+	return 0;
+	}
