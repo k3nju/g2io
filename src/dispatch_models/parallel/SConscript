@@ -1,0 +1,14 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
+import os;
+
+Import( "env" );
+
+def Main():
+	for i in os.listdir( "./" ):
+		if i.endswith( ".cpp" ) == False:
+			continue;
+		env.StaticLibrary( i );
+
+Main();

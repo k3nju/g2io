@@ -2,11 +2,13 @@
 
 namespace g2io
 	{
+	class IPoll;
+	
 	//-----------------------------------------------------------------------------------------//
-	class Poll
+	class IHandlerBase
 		{
 		public:
-			virtual ~Poll() = 0 {};
-			virtual void Register( int fd, int events );
+			virtual ~IHandlerBase(){};
+			virtual void Handle( int events, IPoll &poll ) = 0;
 		};
 	}

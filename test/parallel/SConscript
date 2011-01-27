@@ -1,0 +1,32 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
+compileFlags = [
+	"-fpermissive",
+	"-g",
+	"-Wpointer-arith",
+	"-W",
+	"-Wall",
+	"-Wno-variadic-macros",
+	"-pedantic",
+	"-O2",
+	"-I/home/kj/dev/g2/src/",
+	];
+
+libs = [
+	"dispatcher",
+	"g2",
+	"pthread",
+	"rt",
+	];
+
+libpath = [
+	"/home/kj/dev/g2/build/",
+	"/home/kj/dev/g2io/src/dispatch_models/parallel/",
+	];
+
+env = Environment( CXXFLAGS = compileFlags,
+	  			   LIBS = libs,
+				   LIBPATH = libpath );
+env.Program( "./a.out", "main.cpp" );
+

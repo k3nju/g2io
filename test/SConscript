@@ -1,0 +1,7 @@
+#! /usr/bin/python
+
+sconscripts = [
+	"parallel",
+	];
+
+SConscipt( sconscripts );
