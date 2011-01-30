@@ -2,7 +2,7 @@
 
 #include "includes.h"
 #include "g2includes.h"
-#include "../../ipoll.h"
+#include "../../ipollrequest.h"
 #include "../../ihandlerbase.h"
 
 namespace g2io
@@ -37,7 +37,7 @@ namespace g2io
 			typedef std::vector< WorkerThread* > threads_t;
 
 			//-----------------------------------------------------------------------------------------//
-			class Poll :public IPoll
+			class Poll :public IPollRequest
 				{
 				public:
 					Poll( Dispatcher &disp, g2::Epoll &ep );

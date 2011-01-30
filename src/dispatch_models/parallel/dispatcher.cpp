@@ -96,7 +96,10 @@ namespace g2io
 					{
 					int e = actives[i].events;
 					IHandlerBase *handler = (IHandlerBase*)( actives[i].data.ptr );
-					handler->Handle( e, poll );
+					if( handler->Handle( e, poll ) == IHandlerBase::HANDLED )
+						{
+						delete handler;
+						}
 					}
 				}
 			}
