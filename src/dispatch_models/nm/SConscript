@@ -1,0 +1,38 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
+import os;
+
+compileFlags = [
+	"-fpermissive",
+	"-g",
+	"-Wpointer-arith",
+	"-W",
+	"-Wall",
+	"-Wno-variadic-macros",
+	"-pedantic",
+	"-O2",
+	"-I/home/kj/dev/g2/src/",
+	];
+
+def Main():
+	Import( "env" );
+	for i in os.listdir( "./" ):
+		if i.endswith( ".cpp" ) == False:
+			continue;
+		env.StaticLibrary( i );
+
+def UnitCompile():
+	for i in os.listdir( "./" ):
+		if i.endswith( ".cpp" ):
+			Object( i,
+					CXXFLAGS = compileFlags );
+		
+AddOption( "--unitcompile",
+		   dest="unitcompile",
+		   action="store_true" );
+
+if GetOption( "unitcompile" ):
+	UnitCompile();
+else:
+	Main();
