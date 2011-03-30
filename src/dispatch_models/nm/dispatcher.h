@@ -1,6 +1,8 @@
 #pragma once
 
 #include "includes.h"
+#include "pollmanager.h"
+#include "../../ihandlerbase.h"
 
 namespace g2io
 	{
@@ -9,7 +11,7 @@ namespace g2io
 			G2_MARK_UNCOPYABLE( Dispatcher );
 
 		public:
-			Dispatcher( uint_t pollCount, uint_t threadCount );
+			Dispatcher( size_t pollCount, size_t threadCount );
 			~Dispatcher();
 
 			void Register( int fd, int events, IHandlerBase *handler );
@@ -24,9 +26,10 @@ namespace g2io
 				};
 
 			typedef g2::ThreadPool< Worker > thread_pool_t;
-			
+
+			const size_t pollCount_;
+			const size_t threadCount_;
 			PollManager pollManager_;
-			const uint_t threadCount_;
 			thread_pool_t threadPool_;
 		};
 	}

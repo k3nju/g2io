@@ -13,7 +13,7 @@
 #include "epolldata.h"
 #include "threading.h"
 #include "mutexlock.h"
-#include "conditonvalue.h"
+#include "conditionvalue.h"
 #include "threadpool.h"
 
 //-----------------------------------------------------------------------------------------//

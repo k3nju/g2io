@@ -10,7 +10,7 @@ namespace g2io
 	class Poll :public IPollRequest
 		{
 		public:
-			Poll( PollManager *pollManager );
+			Poll();
 			virtual ~Poll();
 			virtual void Register( int fd, int events, IHandlerBase *handler );
 			virtual void Update( int fd, int events, IHandlerBase *handler );
@@ -18,8 +18,19 @@ namespace g2io
 			virtual void Stop();
 			inline int Select( epoll_event *events, size_t size ){ return epoll_.Select( events, size, -1 ); }
 
+			inline void SetPollManager( PollManager *pollManager ){ pollManager_ = pollManager; }
+			inline void SetThreadPool( g2::IThreadPool *threadPool ){ threadPool_ = threadPool; }
+
+			inline size_t GetCount() const { return count_; }
+			
 		private:
 			PollManager *pollManager_;
+			g2::IThreadPool *threadPool_;
 			g2::Epoll epoll_;
+			size_t count_;
+
+			friend class PollManager;
 		};
+
+	typedef boost::shared_ptr< Poll > poll_ptr_t;
 	}
