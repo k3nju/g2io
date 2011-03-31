@@ -23,7 +23,6 @@ namespace g2io
 		{
 		assert( pollManager_ != NULL );
 		pollManager_->Register( fd, events, handler );
-		__sync_fetch_and_add( &count_, 1 );
 		}
 
 	//-----------------------------------------------------------------------------------------//
@@ -46,5 +45,12 @@ namespace g2io
 		{
 		assert( threadPool_ != NULL );
 		threadPool_->Stop();
+		}
+
+	//-----------------------------------------------------------------------------------------//
+	void Poll::RegisterImpl( int fd, int events, IHandlerBase *handler )
+		{
+		epoll_.Register( fd, events, g2::EpollData( handler ) );
+		__sync_fetch_and_add( &count_, 1 );
 		}
 	}

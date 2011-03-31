@@ -14,7 +14,7 @@ namespace g2io
 		for( uint_t i = 0; i < threadCount; ++i )
 			{
 			WorkerThread *t = new WorkerThread();
-			t->SetArgv( this );
+			t->SetArgs( this );
 			threads_.push_back( t );
 			}
 		}

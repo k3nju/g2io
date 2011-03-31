@@ -22,7 +22,7 @@ libs = [
 
 libpath = [
 	"/home/kj/dev/g2/build/",
-	"/home/kj/dev/g2io/src/dispatch_models/parallel/",
+	"/home/kj/dev/g2io/src/dispatch_models/nm/",
 	];
 
 env = Environment( CXXFLAGS = compileFlags,

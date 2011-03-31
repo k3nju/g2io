@@ -27,7 +27,7 @@ namespace g2io
 					void Register( int fd, int events, IHandlerBase *handler );
 					
 				private:
-					virtual int Thread( void *argv );
+					virtual int Thread( void *args );
 					
 					g2::Epoll epoll_;
 					

@@ -1,7 +1,8 @@
 #! /usr/bin/python
 
 sconscripts = [
-	"./src/",
+	"./src/SConscript",
+	#"./test/",
 	];
 
 SConscript( sconscripts );

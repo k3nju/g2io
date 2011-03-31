@@ -6,7 +6,7 @@
 #include "eventtype.h"
 #include "../../src/ihandlerbase.h"
 #include "../../src/ipollrequest.h"
-#include "../../src/dispatch_models/parallel/dispatcher.h"
+#include "../../src/dispatch_models/nm/dispatcher.h"
 
 const char RESPONSE[] =	
 	"HTTP/1.1 200 OK\r\n"
@@ -50,12 +50,6 @@ class Responder :public g2io::IHandlerBase
 				{
 				sock_.Send( RESPONSE, sizeof( RESPONSE ) );
 				poll.Update( sock_.GetSocket(), g2::event_type::ONE_SHOT_READ, this );
-				YIELD return CONTINUE;
-				}
-
-				{
-				char buf[1024];
-				sock_.Receive( buf, sizeof( buf ) );
 				}
 				
 				}
@@ -116,7 +110,7 @@ class Acceptor :public g2io::IHandlerBase
 
 int main()
 	{
-	g2io::Dispatcher disp( 1 );
+	g2io::Dispatcher disp( 1, 3 );
 	Acceptor a;
 	disp.Register( a.GetSocket(),
 				   g2::event_type::ONE_SHOT_ACCEPT,

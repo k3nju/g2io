@@ -9,13 +9,23 @@ namespace g2io
 		 pollManager_(),
 		 threadPool_()
 		{
+		pollManager_.CreatePolls( pollCount_, &threadPool_ );
+		}
+
+	//-----------------------------------------------------------------------------------------//
+	Dispatcher::~Dispatcher()
+		{
+		}
+
+	//-----------------------------------------------------------------------------------------//
+	void Dispatcher::Register( int fd, int events, IHandlerBase *handler )
+		{
+		pollManager_.Register( fd, events, handler );
 		}
 
 	//-----------------------------------------------------------------------------------------//
 	void Dispatcher::Dispatch()
 		{
-		pollManager_.CreatePolls( pollCount_, &threadPool_ );
-		
 		for( size_t i = 0; i < threadCount_; ++i )
 			{
 			threadPool_.Add( &pollManager_ );
@@ -40,13 +50,16 @@ namespace g2io
 			{
 			poll_ptr_t poll = pollManager->GetPoll();
 			struct epoll_event entries[1024];
-			
+
+			printf( "[*] polling...: %x\n", (size_t)GetThreadID() );
 			int count = poll->Select( entries, 1024 );
+			printf( "[*] polled....: %x %d %d\n", (size_t)GetThreadID(), poll->GetCount(), count );
+			
 			if( count <= 0 )
 				{
 				continue;
 				}
-
+			
 			for( size_t i = 0; i < (size_t)count; ++i )
 				{
 				int events = entries[i].events;

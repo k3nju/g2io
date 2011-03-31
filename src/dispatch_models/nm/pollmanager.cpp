@@ -8,7 +8,6 @@ namespace g2io
 	PollManager::PollManager()
 		:seq_( 0 ),
 		 regIndex_( 0 ),
-		 regIndexLock_(),
 		 polls_()
 		{
 		}
@@ -32,21 +31,22 @@ namespace g2io
 	//-----------------------------------------------------------------------------------------//
 	void PollManager::Register( int fd, int events, IHandlerBase *handler )
 		{
-		g2::CriticalScope<> locked( regIndexLock_ );
+		poll_vector_t::iterator head = polls_.begin();
+		poll_vector_t::iterator foot = polls_.end();
+		poll_vector_t::iterator iter = head;
+		size_t size = (*head)->GetCount();
 		
-		size_t tmp = polls_[regIndex_]->GetCount();
-		size_t size = polls_.size();
-		
-		for( size_t i = 0; i < size; ++i )
+		for( ++head; head != foot; ++head )
 			{
-			if( tmp < polls_[i]->GetCount() )
+			size_t cur = (*head)->GetCount();
+			if( cur < size )
 				{
-				regIndex_ = i;
-				break;
+				iter = head;
+				size = cur;
 				}
 			}
 
-		polls_[regIndex_]->epoll_.Register( fd, events, g2::EpollData( handler ) );
+		(*iter)->RegisterImpl( fd, events, handler );
 		}
 
 	//-----------------------------------------------------------------------------------------//

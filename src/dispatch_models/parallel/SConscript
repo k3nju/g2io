@@ -16,11 +16,12 @@ compileFlags = [
 	];
 
 def Main():
-	Import( "env" );
+	tmp = [];
 	for i in os.listdir( "./" ):
 		if i.endswith( ".cpp" ) == False:
 			continue;
-		env.StaticLibrary( i );
+		tmp.append( i );
+	StaticLibrary( "dispatcher", tmp, CXXFLAGS = compileFlags );
 
 def UnitCompile():
 	for i in os.listdir( "./" ):

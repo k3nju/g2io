@@ -24,6 +24,8 @@ namespace g2io
 			inline size_t GetCount() const { return count_; }
 			
 		private:
+			void RegisterImpl( int fd, int events, IHandlerBase *handler );
+			
 			PollManager *pollManager_;
 			g2::IThreadPool *threadPool_;
 			g2::Epoll epoll_;

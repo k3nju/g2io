@@ -18,7 +18,6 @@ namespace g2io
 		private:
 			size_t seq_;
 			size_t regIndex_;
-			g2::MutexLock regIndexLock_;
 			
 			typedef std::vector< poll_ptr_t > poll_vector_t;
 			poll_vector_t polls_;
