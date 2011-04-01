@@ -1,0 +1,31 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
+compileFlags = [
+	"-fpermissive",
+	"-g",
+	"-Wpointer-arith",
+	"-W",
+	"-Wall",
+	"-Wno-variadic-macros",
+	"-pedantic",
+	"-O2",
+	"-I/home/hoge/g2/src/",
+	];
+
+libs = [
+	"dispatcher",
+	"g2",
+	"pthread",
+	"rt",
+	];
+
+libpath = [
+	"/home/hoge/g2/build/",
+	"/home/hoge/g2io/src/dispatch_models/nm/",
+	];
+
+env = Environment( CXXFLAGS = compileFlags,
+	  			   LIBS = libs,
+				   LIBPATH = libpath );
+env.Program( "./a.out", "main.cpp" );
