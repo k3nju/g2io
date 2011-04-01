@@ -109,9 +109,9 @@ class Acceptor :public g2io::IHandlerBase
 	};
 
 
-int main()
+int main(int, char **argv)
 	{
-	g2io::Dispatcher disp( 5 );
+	g2io::Dispatcher disp( atoi( argv[1] ) );
 	Acceptor a;
 	disp.Register( a.GetSocket(),
 				   g2::event_type::ONE_SHOT_ACCEPT,
