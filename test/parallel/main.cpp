@@ -50,14 +50,9 @@ class Responder :public g2io::IHandlerBase
 				{
 				sock_.Send( RESPONSE, sizeof( RESPONSE ) );
 				poll.Update( sock_.GetSocket(), g2::event_type::ONE_SHOT_READ, this );
-				YIELD return CONTINUE;
+				return HANDLED;
 				}
 
-				{
-				char buf[1024];
-				sock_.Receive( buf, sizeof( buf ) );
-				}
-				
 				}
 
 			return HANDLED;
@@ -116,7 +111,7 @@ class Acceptor :public g2io::IHandlerBase
 
 int main()
 	{
-	g2io::Dispatcher disp( 1 );
+	g2io::Dispatcher disp( 5 );
 	Acceptor a;
 	disp.Register( a.GetSocket(),
 				   g2::event_type::ONE_SHOT_ACCEPT,
