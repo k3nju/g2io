@@ -46,7 +46,8 @@ Export( "build_model" );
 def build_mock( d ):
 	targets = list_cpp( d );
 	ENV.Program( targets,
-				 LIBPATH = LIBPATH );
+				 LIBPATH = LIBPATH,
+				 LIBS = LIBS );
 Export( "build_mock" );
 
 def run_sconscript( name, path ):
@@ -62,4 +63,3 @@ if target in TARGETS:
 else:
 	for i in TARGETS:
 		run_sconscript( i, TARGETS[i] );
-
