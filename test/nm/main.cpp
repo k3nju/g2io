@@ -4,9 +4,9 @@
 #include "eventtype.h"
 #include "coroutine.h"
 #include "eventtype.h"
-#include "../../src/ihandlerbase.h"
-#include "../../src/ipollrequest.h"
-#include "../../src/dispatch_models/nm/dispatcher.h"
+#include "ihandlerbase.h"
+#include "ipollrequest.h"
+#include "dispatch_models/nm/dispatcher.h"
 
 const char RESPONSE[] =	
 	"HTTP/1.1 200 OK\r\n"

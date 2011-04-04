@@ -2,6 +2,13 @@
 # -*- coding:utf-8 -*-
 
 import os;
+Import( "LIBPATH" );
+Import( "LIBS" );
 Import( "build_mock" );
 Import( "path" );
-build_mock( path );
+Import( "list_cpp" );
+
+libs = ["dispatcher"] + LIBS[:];
+libpath = ["../../build/nm/"] + LIBPATH[:];
+
+build_mock( path, libpath, libs );

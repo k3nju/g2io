@@ -2,7 +2,7 @@
 
 #include "includes.h"
 #include "poll.h"
-#include "../../ipollrequest.h"
+#include "ipollrequest.h"
 
 namespace g2io
 	{

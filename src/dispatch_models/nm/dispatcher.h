@@ -2,7 +2,7 @@
 
 #include "includes.h"
 #include "pollmanager.h"
-#include "../../ihandlerbase.h"
+#include "ihandlerbase.h"
 
 namespace g2io
 	{

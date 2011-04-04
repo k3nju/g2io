@@ -1,7 +1,7 @@
 #pragma once
 
 #include "includes.h"
-#include "../../ipollrequest.h"
+#include "ipollrequest.h"
 
 namespace g2io
 	{
