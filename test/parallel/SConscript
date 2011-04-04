@@ -5,9 +5,8 @@ import os;
 Import( "LIBPATH" );
 Import( "LIBS" );
 Import( "build_mock" );
-Import( "path" );
 
 libs = ["dispatcher"] + LIBS[:];
 libpath = ["../../build/parallel/"] + LIBPATH[:];
 
-build_mock( path, libpath, libs );
+build_mock( libpath, libs );

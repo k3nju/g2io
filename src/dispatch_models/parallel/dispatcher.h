@@ -2,8 +2,8 @@
 
 #include "includes.h"
 #include "g2includes.h"
-#include "../../ipollrequest.h"
-#include "../../ihandlerbase.h"
+#include "ipollrequest.h"
+#include "ihandlerbase.h"
 
 namespace g2io
 	{

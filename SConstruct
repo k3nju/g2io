@@ -21,45 +21,38 @@ LIBPATH = [
 	HERE + "/g2/build/",
 	];
 LIBS = [ "g2", "pthread" ];
-MODEL_SRC_PATH = HERE + "/src/dispatch_models/";
-MODEL_TEST_PATH = HERE + "/test/";
-ENV = Environment( CXXFLAGS = CXXFLAGS );
-list_cpp = lambda d: [ d + i for i in os.listdir( d ) if i.endswith( ".cpp" ) ];
 TARGETS = {
-	"nm" : MODEL_SRC_PATH + "nm/",
-	"parallel" : MODEL_SRC_PATH + "parallel/",
-	"mock_nm" : MODEL_TEST_PATH + "nm/",
-	"mock_parallel" : MODEL_TEST_PATH + "parallel/",
+	"nm" : "./src/dispatch_models/nm/",
+	"parallel" : "./src/dispatch_models/parallel/",
+	"mock_nm" : "./test/nm/",
+	"mock_parallel" : "./test/parallel/",
 	};
 
 ## defs exported ##
 Export( "CXXFLAGS" );
 Export( "LIBPATH" );
 Export( "LIBS" );
-Export( "list_cpp" );
 
 ## utility functions ##
-def build_model( d ):
-	targets = list_cpp( d );
-	ENV.StaticLibrary( "dispatcher",
-					   targets );
+def build_model():
+	StaticLibrary( "dispatcher",
+				   Glob( "*.cpp" ),
+				   CXXFLAGS = CXXFLAGS );
 Export( "build_model" );
 
-def build_mock( d, libpath, libs ):
-	targets = list_cpp( d );
-	ENV.Program( "a.out",
-				 targets,
-				 LIBPATH = libpath,
-				 LIBS = libs );
+def build_mock( libpath, libs ):
+	Program( "a.out",
+			 Glob( "*.cpp" ),
+			 CXXFLAGS = CXXFLAGS,
+			 LIBPATH = libpath,
+			 LIBS = libs );
 Export( "build_mock" );
 
-def run_sconscript( name, path ):
-	SConscript( exports = [ "path" ],
-				dirs = path,
-				variant_dir = "build/" + name );
+def run_sconscript( name, src_path ):
+	SConscript( dirs = src_path,
+				variant_dir = "./build/" + name );
 
 ## main ##
-
 target = ARGUMENTS.get( "target", None );
 
 if target in TARGETS:
@@ -67,3 +60,4 @@ if target in TARGETS:
 else:
 	for i in TARGETS:
 		run_sconscript( i, TARGETS[i] );
+

@@ -3,5 +3,4 @@
 
 import os;
 Import( "build_model" );
-Import( "path" );
-build_model( path );
+build_model();
