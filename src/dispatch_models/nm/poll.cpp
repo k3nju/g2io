@@ -9,7 +9,8 @@ namespace g2io
 		:pollManager_( NULL ),
 		 threadPool_( NULL ),
 		 epoll_(),
-		 count_( 0 )
+		 count_( 0 ),
+		 isPolling_( false )
 		{
 		}
 	
@@ -45,6 +46,29 @@ namespace g2io
 		{
 		assert( threadPool_ != NULL );
 		threadPool_->Stop();
+		}
+
+	//-----------------------------------------------------------------------------------------//
+	int Poll::Select( epoll_event *events, size_t size )
+		{
+		//return epoll_.Select( events, size, -1 );
+
+		int ret = 0;
+
+		if( __sync_bool_compare_and_swap( &isPolling_, false, true ) )
+			{
+			try
+				{
+				ret = epoll_.Select( events, size, -1 );
+				}
+			catch( ... )
+				{
+				}
+			
+			__sync_bool_compare_and_swap( &isPolling_, true, false );
+			}
+		
+		return ret;
 		}
 
 	//-----------------------------------------------------------------------------------------//

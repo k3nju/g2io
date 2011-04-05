@@ -16,7 +16,7 @@ namespace g2io
 			virtual void Update( int fd, int events, IHandlerBase *handler );
 			virtual void Unregister( int fd );
 			virtual void Stop();
-			inline int Select( epoll_event *events, size_t size ){ return epoll_.Select( events, size, 1 ); }
+			int Select( epoll_event *events, size_t size );
 
 			inline void SetPollManager( PollManager *pollManager ){ pollManager_ = pollManager; }
 			inline void SetThreadPool( g2::IThreadPool *threadPool ){ threadPool_ = threadPool; }
@@ -30,6 +30,7 @@ namespace g2io
 			g2::IThreadPool *threadPool_;
 			g2::Epoll epoll_;
 			size_t count_;
+			bool isPolling_;
 
 			friend class PollManager;
 		};

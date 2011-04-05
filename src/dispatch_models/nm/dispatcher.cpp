@@ -51,9 +51,9 @@ namespace g2io
 			poll_ptr_t poll = pollManager->GetPoll();
 			struct epoll_event entries[1024];
 
-			printf( "[*] polling...: %x\n", (size_t)GetThreadID() );
+			//printf( "[*] polling...: %x\n", (size_t)GetThreadID() );
 			int count = poll->Select( entries, 1024 );
-			printf( "[*] polled....: %x %d %d\n", (size_t)GetThreadID(), poll->GetCount(), count );
+			//printf( "[*] polled....: %x %d %d\n", (size_t)GetThreadID(), poll->GetCount(), count );
 			
 			if( count <= 0 )
 				{
