@@ -15,6 +15,7 @@
 #include "mutexlock.h"
 #include "conditionvalue.h"
 #include "threadpool.h"
+#include "signalevent.h"
 
 //-----------------------------------------------------------------------------------------//
 #include <boost/shared_ptr.hpp>

@@ -21,6 +21,7 @@ namespace g2io
 			inline void SetPollManager( PollManager *pollManager ){ pollManager_ = pollManager; }
 			inline void SetThreadPool( g2::IThreadPool *threadPool ){ threadPool_ = threadPool; }
 
+			inline bool IsPolling() const { return isPolling_; }
 			inline size_t GetCount() const { return count_; }
 			
 		private:

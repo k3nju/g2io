@@ -40,7 +40,7 @@ namespace g2io
 		threadPool_.Stop();
 		}
 
-	//-----------------------------------------------------------------------------------------//
+/*	//-----------------------------------------------------------------------------------------//
 	int Dispatcher::Worker::Thread( void *args )
 		{
 		g2::WorkerArgs *wargs = (g2::WorkerArgs*)args;
@@ -71,6 +71,45 @@ namespace g2io
 					}
 
 				IHandlerBase::result r = handler->Handle( events, *poll );
+				if( r == IHandlerBase::HANDLED )
+					{
+					delete handler;
+					}
+				}
+			}
+
+		return 0;
+		}
+*/
+	
+	//-----------------------------------------------------------------------------------------//
+	int Dispatcher::Worker::Thread( void *args )
+		{
+		g2::WorkerArgs *wargs = (g2::WorkerArgs*)args;
+		PollManager *pollManager = (PollManager*)(wargs->GetArgs());
+
+		while( wargs->IsRunnable() == true )
+			{
+			struct epoll_event entries[1024];
+			select_result_t result = pollManager->Select( entries, 1024 );
+			int count = result.first;
+
+			if( count <= 0 )
+				{
+				continue;
+				}
+
+			for( size_t i = 0; i < (size_t)count; ++i )
+				{
+				int events = entries[i].events;
+				IHandlerBase *handler = (IHandlerBase*)(entries[i].data.ptr);
+				
+				if( handler == NULL )
+					{
+					continue;
+					}
+				
+				IHandlerBase::result r = handler->Handle( events, *(result.second) );
 				if( r == IHandlerBase::HANDLED )
 					{
 					delete handler;
