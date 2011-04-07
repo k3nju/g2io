@@ -51,8 +51,6 @@ namespace g2io
 	//-----------------------------------------------------------------------------------------//
 	int Poll::Select( epoll_event *events, size_t size )
 		{
-		//return epoll_.Select( events, size, -1 );
-
 		int ret = 0;
 
 		if( __sync_bool_compare_and_swap( &isPolling_, false, true ) )

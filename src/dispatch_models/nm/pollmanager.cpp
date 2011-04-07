@@ -67,22 +67,22 @@ namespace g2io
 			{
 			for(; head != foot; ++head )
 				{
-				if( (*head)->IsPolling() == false )
+				int count = (*head)->Select( events, size );
+				if( count <= 0 )
+					continue;
+				
+				if( __sync_bool_compare_and_swap( &isAllPolling_, true, false ) )
 					{
-					int count = (*head)->Select( events, size );
-					if( __sync_bool_compare_and_swap( &isAllPolling_, true, false ) )
-						{
-						pollWait_.Broadcast();
-						}
-					
-					return std::make_pair( count, *head );
+					pollWait_.Broadcast();
 					}
+				
+				return std::make_pair( count, *head );
 				}
-
+			
 			__sync_bool_compare_and_swap( &isAllPolling_, false, true );
 			pollWait_.Wait();
 			}
-
+		
 		return std::make_pair( 0, poll_ptr_t() );
 		}
 	}

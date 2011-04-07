@@ -70,7 +70,7 @@ class Acceptor :public g2io::IHandlerBase
 			:sock_()
 			{
 			sock_.EnableReuseAddr( true );
-			sock_.Bind( "localhost", 56000 );
+			sock_.Bind( "0.0.0.0", 56000 );
 			sock_.EnableNonBlocking( true );
 			sock_.Listen( 0xffff );
 			}

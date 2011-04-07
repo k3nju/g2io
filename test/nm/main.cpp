@@ -4,6 +4,8 @@
 #include "eventtype.h"
 #include "coroutine.h"
 #include "eventtype.h"
+#include "mutexlock.h"
+#include "criticalscope.h"
 #include "ihandlerbase.h"
 #include "ipollrequest.h"
 #include "dispatch_models/nm/dispatcher.h"
@@ -37,16 +39,17 @@ class Responder :public g2io::IHandlerBase
 
 		virtual IHandlerBase::result Handle( int events, g2io::IPollRequest &poll )
 			{
+			g2::CriticalScope<> locked( lock_ );
+			
 			CORO( coro_ )
 				{
-				
 				{
 				char buf[1024];
 				sock_.Receive( buf, sizeof( buf ) );
 				poll.Update( sock_.GetSocket(), g2::event_type::ONE_SHOT_WRITE, this );
 				YIELD return CONTINUE;
 				}
-
+				
 				{
 				sock_.Send( RESPONSE, sizeof( RESPONSE ) );
 				poll.Update( sock_.GetSocket(), g2::event_type::ONE_SHOT_READ, this );
@@ -60,6 +63,7 @@ class Responder :public g2io::IHandlerBase
 	private:
 		g2::TCPSocket sock_;
 		int coro_;
+		g2::MutexLock lock_;		
 	};
 
 class Acceptor :public g2io::IHandlerBase
@@ -69,7 +73,7 @@ class Acceptor :public g2io::IHandlerBase
 			:sock_()
 			{
 			sock_.EnableReuseAddr( true );
-			sock_.Bind( "localhost", 56000 );
+			sock_.Bind( "0.0.0.0", 56000 );
 			sock_.EnableNonBlocking( true );
 			sock_.Listen( 0xffff );
 			}

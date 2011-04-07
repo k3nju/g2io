@@ -93,7 +93,7 @@ namespace g2io
 			struct epoll_event entries[1024];
 			select_result_t result = pollManager->Select( entries, 1024 );
 			int count = result.first;
-
+			
 			if( count <= 0 )
 				{
 				continue;
