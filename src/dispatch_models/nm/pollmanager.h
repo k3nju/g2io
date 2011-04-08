@@ -13,7 +13,7 @@ namespace g2io
 		public:
 			PollManager();
 			
-			void CreatePolls( size_t count, g2::IThreadPool *threadPool );
+			void CreatePolls( size_t count, g2::ThreadPool *threadPool );
 			void Register( int fd, int events, IHandlerBase *handler );
 			select_result_t Select( struct epoll_event *events, size_t size );
 			poll_ptr_t GetPoll();

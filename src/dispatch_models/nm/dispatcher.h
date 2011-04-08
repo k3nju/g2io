@@ -25,11 +25,9 @@ namespace g2io
 					virtual int Thread( void *args );
 				};
 
-			typedef g2::ThreadPool< Worker > thread_pool_t;
-
 			const size_t pollCount_;
 			const size_t threadCount_;
 			PollManager pollManager_;
-			thread_pool_t threadPool_;
+			g2::ThreadPool threadPool_;
 		};
 	}

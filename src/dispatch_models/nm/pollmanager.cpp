@@ -14,7 +14,7 @@ namespace g2io
 		}
 
 	//-----------------------------------------------------------------------------------------//
-	void PollManager::CreatePolls( size_t count, g2::IThreadPool *threadPool )
+	void PollManager::CreatePolls( size_t count, g2::ThreadPool *threadPool )
 		{
 		assert( count > 0 );
 		

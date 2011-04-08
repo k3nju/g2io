@@ -19,7 +19,7 @@ namespace g2io
 			int Select( epoll_event *events, size_t size );
 
 			inline void SetPollManager( PollManager *pollManager ){ pollManager_ = pollManager; }
-			inline void SetThreadPool( g2::IThreadPool *threadPool ){ threadPool_ = threadPool; }
+			inline void SetThreadPool( g2::ThreadPool *threadPool ){ threadPool_ = threadPool; }
 
 			inline bool IsPolling() const { return isPolling_; }
 			inline size_t GetCount() const { return count_; }
@@ -28,7 +28,7 @@ namespace g2io
 			void RegisterImpl( int fd, int events, IHandlerBase *handler );
 			
 			PollManager *pollManager_;
-			g2::IThreadPool *threadPool_;
+			g2::ThreadPool *threadPool_;
 			g2::Epoll epoll_;
 			size_t count_;
 			bool isPolling_;
