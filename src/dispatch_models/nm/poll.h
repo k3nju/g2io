@@ -3,6 +3,11 @@
 #include "includes.h"
 #include "ipollrequest.h"
 
+namespace g2
+	{
+	class ThreadPool;
+	}
+
 namespace g2io
 	{
 	class PollManager;

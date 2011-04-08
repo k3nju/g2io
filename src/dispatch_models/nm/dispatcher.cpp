@@ -28,7 +28,7 @@ namespace g2io
 		{
 		for( size_t i = 0; i < threadCount_; ++i )
 			{
-			threadPool_.Add( &pollManager_ );
+			threadPool_.Add< Worker >( pollManager_ );
 			}
 
 		threadPool_.Join();
@@ -81,17 +81,22 @@ namespace g2io
 		return 0;
 		}
 */
+
+	//-----------------------------------------------------------------------------------------//
+	int Dispatcher::Worker::Worker( PollManager &pollManager )
+		:pollManager_( pollManager )
+		{
+		}
 	
 	//-----------------------------------------------------------------------------------------//
 	int Dispatcher::Worker::Thread( void *args )
 		{
 		g2::WorkerArgs *wargs = (g2::WorkerArgs*)args;
-		PollManager *pollManager = (PollManager*)(wargs->GetArgs());
-
+		
 		while( wargs->IsRunnable() == true )
 			{
 			struct epoll_event entries[1024];
-			select_result_t result = pollManager->Select( entries, 1024 );
+			select_result_t result = pollManager_.Select( entries, 1024 );
 			int count = result.first;
 			
 			if( count <= 0 )
@@ -120,5 +125,3 @@ namespace g2io
 		return 0;
 		}
 	}
-
-

@@ -21,10 +21,15 @@ namespace g2io
 		private:
 			class Worker :public g2::Threading
 				{
+				public:
+					Worker( PollManager &pollManager );
+					
 				private:
 					virtual int Thread( void *args );
-				};
 
+					PollManager &pollManager_;
+				};
+			
 			const size_t pollCount_;
 			const size_t threadCount_;
 			PollManager pollManager_;
