@@ -14,18 +14,18 @@ CXXFLAGS = [
 	"-Wno-variadic-macros",
 	"-pedantic",
 	"-O2",
-	"-I./g2/src/",
+	"-I./g2src/g2/",
 	"-I./src/",
 	];
 LIBPATH = [
-	HERE + "/g2/build/",
+	HERE + "/g2src/",
 	];
 LIBS = [ "g2", "pthread" ];
 TARGETS = {
-	"nm" : "./src/dispatch_models/nm/",
-	"parallel" : "./src/dispatch_models/parallel/",
-	"mock_nm" : "./test/nm/",
-	"mock_parallel" : "./test/parallel/",
+	"threadpool" : "./src/dispatch_models/threadpool/",
+	"multipoll" : "./src/dispatch_models/multipoll/",
+	"mock_threadpool" : "./test/threadpool/",
+	"mock_multipoll" : "./test/multipoll/",
 	};
 
 ## defs exported ##

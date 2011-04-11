@@ -2,7 +2,7 @@
 
 namespace g2io
 	{
-	class IPollRequest;
+	class IPoll;
 	
 	//-----------------------------------------------------------------------------------------//
 	class IHandlerBase
@@ -15,6 +15,6 @@ namespace g2io
 				};
 			
 			virtual ~IHandlerBase(){};
-			virtual enum result Handle( int events, IPollRequest &preq ) = 0;
+			virtual enum result Handle( int events, IPoll &poll ) = 0;
 		};
 	}

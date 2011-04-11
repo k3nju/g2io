@@ -1,0 +1,12 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
+import os;
+Import( "LIBPATH" );
+Import( "LIBS" );
+Import( "build_mock" );
+
+libs = ["dispatcher"] + LIBS[:];
+libpath = ["../../build/threadpool/"] + LIBPATH[:];
+
+build_mock( libpath, libs );
